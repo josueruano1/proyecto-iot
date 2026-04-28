@@ -1,0 +1,22 @@
+# Clave SSH - NUNCA subir
+vockey.pem
+*.pem
+
+# Terraform state (contiene IPs y datos sensibles)
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform/
+.terraform.lock.hcl
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Paquetes Lambda
+package/
+lambda_function/
+*.zip
