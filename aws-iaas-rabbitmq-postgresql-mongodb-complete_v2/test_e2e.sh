@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-LB="3.92.192.253"
+LB="52.91.13.99"
 
 echo "=== POST /orders ==="
 RESP=$(curl -s -X POST http://$LB/orders \
