@@ -22,24 +22,15 @@ resource "aws_instance" "api_server" {
   subnet_id         = var.subnet_id
   vpc_security_group_ids = [aws_security_group.api_sg.id]
   user_data         = templatefile("${path.module}/install_api.sh", {
-    api_main_py = file("${path.module}/api/main.py")
-    api_settings_py = file("${path.module}/api/settings.py")
-    api_db_py = file("${path.module}/api/db.py")
-    api_schemas_py = file("${path.module}/api/schemas.py")
-    api_repository_py = file("${path.module}/api/repository.py")
-    api_rabbitmq_client_py = file("${path.module}/api/rabbitmq_client.py")
-    api_service_py = file("${path.module}/api/service.py")
-    api_requirements_txt = file("${path.module}/api/requirements.txt")
-    api_dockerfile = file("${path.module}/api/Dockerfile")
-    db_port = "5432"
-    db_name = "mydb"
-    db_user = "admin"
-    db_password = "password123"
-    db_host = aws_instance.postgres.private_ip
-    rabbitmq_port = "5672"
-    rabbitmq_user = "admin"
+    db_host           = aws_instance.postgres.private_ip
+    db_port           = "5432"
+    db_name           = "mydb"
+    db_user           = "admin"
+    db_password       = "password123"
+    rabbitmq_host     = aws_instance.rabbitmq.private_ip
+    rabbitmq_port     = "5672"
+    rabbitmq_user     = "admin"
     rabbitmq_password = "password123"
-    rabbitmq_host = aws_instance.rabbitmq.private_ip
     rabbitmq_queue_create = "orders_create"
     rabbitmq_queue_delete = "orders_delete"
   })
@@ -76,21 +67,16 @@ resource "aws_instance" "worker_post" {
   subnet_id         = var.subnet_id
   vpc_security_group_ids = [aws_security_group.worker_sg.id]
   user_data         = templatefile("${path.module}/install_worker.sh", {
-    worker_main_py = file("${path.module}/worker/main.py")
-    worker_settings_py = file("${path.module}/worker/settings.py")
-    worker_db_py = file("${path.module}/worker/db.py")
-    worker_handlers_py = file("${path.module}/worker/handlers.py")
-    worker_requirements_txt = file("${path.module}/worker/requirements.txt")
-    db_host = aws_instance.postgres.private_ip
-    db_port = "5432"
-    db_name = "mydb"
-    db_user = "admin"
-    db_password = "password123"
-    rabbitmq_host = aws_instance.rabbitmq.private_ip
-    rabbitmq_port = "5672"
-    rabbitmq_user = "admin"
+    db_host           = aws_instance.postgres.private_ip
+    db_port           = "5432"
+    db_name           = "mydb"
+    db_user           = "admin"
+    db_password       = "password123"
+    rabbitmq_host     = aws_instance.rabbitmq.private_ip
+    rabbitmq_port     = "5672"
+    rabbitmq_user     = "admin"
     rabbitmq_password = "password123"
-    rabbitmq_queue = "orders_create"
+    rabbitmq_queue    = "orders_create"
   })
 
   tags = {
@@ -107,21 +93,16 @@ resource "aws_instance" "worker_delete" {
   subnet_id         = var.subnet_id
   vpc_security_group_ids = [aws_security_group.worker_sg.id]
   user_data         = templatefile("${path.module}/install_worker.sh", {
-    worker_main_py = file("${path.module}/worker/main.py")
-    worker_settings_py = file("${path.module}/worker/settings.py")
-    worker_db_py = file("${path.module}/worker/db.py")
-    worker_handlers_py = file("${path.module}/worker/handlers.py")
-    worker_requirements_txt = file("${path.module}/worker/requirements.txt")
-    db_host = aws_instance.postgres.private_ip
-    db_port = "5432"
-    db_name = "mydb"
-    db_user = "admin"
-    db_password = "password123"
-    rabbitmq_host = aws_instance.rabbitmq.private_ip
-    rabbitmq_port = "5672"
-    rabbitmq_user = "admin"
+    db_host           = aws_instance.postgres.private_ip
+    db_port           = "5432"
+    db_name           = "mydb"
+    db_user           = "admin"
+    db_password       = "password123"
+    rabbitmq_host     = aws_instance.rabbitmq.private_ip
+    rabbitmq_port     = "5672"
+    rabbitmq_user     = "admin"
     rabbitmq_password = "password123"
-    rabbitmq_queue = "orders_delete"
+    rabbitmq_queue    = "orders_delete"
   })
 
   tags = {
@@ -137,12 +118,7 @@ resource "aws_instance" "producer" {
   key_name          = var.key_name
   subnet_id         = var.subnet_id
   vpc_security_group_ids = [aws_security_group.producer_sg.id]
-  user_data         = templatefile("${path.module}/install_producer.sh", {
-    producer_main_py = file("${path.module}/producer/main.py")
-    producer_config_py = file("${path.module}/producer/config.py")
-    producer_scenarios_py = file("${path.module}/producer/scenarios.py")
-    producer_requirements_txt = file("${path.module}/producer/requirements.txt")
-  })
+  user_data         = file("${path.module}/install_producer.sh")
 
   tags = {
     Name = "Synthetic-Producer"
